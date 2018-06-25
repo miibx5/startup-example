@@ -12,6 +12,9 @@
  */
 package com.edersystems.backendstartup.model.entities;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,23 +22,31 @@ import java.util.Objects;
  *
  * @author Luciano
  */
-public class Lanche implements java.io.Serializable
+public abstract class Lanche
 {
-    private static final long serialVersionUID = -1756235890624059781L;
-
     private String nome;
 
     private List<Ingrediente> ingredientes;
 
+    protected Ingrediente alface = new Ingrediente("Alface", BigDecimal.valueOf(0.40d));
+
+    protected Ingrediente bacon = new Ingrediente("Bacon", BigDecimal.valueOf(2d));
+
+    protected Ingrediente hamburger = new Ingrediente("Hambúrger de Carne", BigDecimal.valueOf(3d));
+
+    protected Ingrediente ovo = new Ingrediente("Ovo", BigDecimal.valueOf(0.80d));
+
+    protected Ingrediente queijo = new Ingrediente("Queijo", BigDecimal.valueOf(1.50d));
+
     public Lanche()
     {
-        this(null, null);
+        this(null);
     }
 
-    public Lanche(String nome, List<Ingrediente> ingredientes)
+    public Lanche(String nome)
     {
         this.nome = nome;
-        this.ingredientes = ingredientes;
+        this.ingredientes = new ArrayList<>();
     }
 
     public String getNome()
@@ -48,47 +59,81 @@ public class Lanche implements java.io.Serializable
         this.nome = nome;
     }
 
+    public Ingrediente getAlface()
+    {
+        return alface;
+    }
+
+    public void setAlface(Ingrediente alface)
+    {
+        this.alface = alface;
+    }
+
+    public Ingrediente getBacon()
+    {
+        return bacon;
+    }
+
+    public void setBacon(Ingrediente bacon)
+    {
+        this.bacon = bacon;
+    }
+
+    public Ingrediente getHamburger()
+    {
+        return hamburger;
+    }
+
+    public void setHamburger(Ingrediente hamburger)
+    {
+        this.hamburger = hamburger;
+    }
+
+    public Ingrediente getOvo()
+    {
+        return ovo;
+    }
+
+    public void setOvo(Ingrediente ovo)
+    {
+        this.ovo = ovo;
+    }
+
+    public Ingrediente getQueijo()
+    {
+        return queijo;
+    }
+
+    public void setQueijo(Ingrediente queijo)
+    {
+        this.queijo = queijo;
+    }
+
     public List<Ingrediente> getIngredientes()
     {
         return ingredientes;
     }
 
-    public void setIngredientes(List<Ingrediente> ingredientes)
+    protected BigDecimal getPreco(List<Ingrediente> ingredientes)
     {
-        this.ingredientes = ingredientes;
+        BigDecimal preco = BigDecimal.ZERO;
+        for(Ingrediente ingrediente : ingredientes)
+        {
+            preco = preco.add(ingrediente.getPrecoDeCusto());
+        }
+        return preco;
     }
 
-    @Override
-    public int hashCode()
+    protected List<Ingrediente> retornaIngredientes(Ingrediente... ingredientes)
     {
-        int hash = 5;
-        hash = 41 * hash + Objects.hashCode(this.nome);
-        return hash;
+        if(Objects.isNull(this.ingredientes))
+        {
+            this.ingredientes = new ArrayList<>();
+        }
+        this.ingredientes.addAll(Arrays.asList(ingredientes));
+        return this.ingredientes;
     }
 
-    @Override
-    public boolean equals(Object obj)
-    {
-        if(this == obj)
-        {
-            return true;
-        }
-        if(obj == null)
-        {
-            return false;
-        }
-        if(getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Lanche other = (Lanche)obj;
-        return Objects.equals(this.nome, other.nome);
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Lanche{" + "nome=" + nome + ", ingredientes=" + ingredientes + '}';
-    }
+    abstract Lanche montarLanche();
 
 }

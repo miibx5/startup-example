@@ -19,36 +19,23 @@ import java.util.Objects;
  *
  * @author Luciano
  */
-public class Ingrediente implements java.io.Serializable
+public class Ingrediente
 {
-    private static final long serialVersionUID = 8065281343260452403L;
-
-    private Long id;
 
     private String nome;
 
-    private BigDecimal preco;
+    private BigDecimal precoDeCusto;
 
     public Ingrediente()
     {
-        this(null, null, null);
+        this(null, null);
     }
 
-    public Ingrediente(Long id, String nome, BigDecimal preco)
+    public Ingrediente(String nome, BigDecimal preco)
     {
-        this.id = id;
+
         this.nome = nome;
-        this.preco = preco;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
+        this.precoDeCusto = preco;
     }
 
     public String getNome()
@@ -61,21 +48,21 @@ public class Ingrediente implements java.io.Serializable
         this.nome = nome;
     }
 
-    public BigDecimal getPreco()
+    public BigDecimal getPrecoDeCusto()
     {
-        return preco;
+        return precoDeCusto;
     }
 
-    public void setPreco(BigDecimal preco)
+    public void setPrecoDeCusto(BigDecimal precoDeCusto)
     {
-        this.preco = preco;
+        this.precoDeCusto = precoDeCusto;
     }
 
     @Override
     public int hashCode()
     {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.id);
+        int hash = 5;
+        hash = 29 * hash + Objects.hashCode(this.nome);
         return hash;
     }
 
@@ -95,13 +82,13 @@ public class Ingrediente implements java.io.Serializable
             return false;
         }
         final Ingrediente other = (Ingrediente)obj;
-        return Objects.equals(this.id, other.id);
+        return Objects.equals(this.nome, other.nome);
     }
 
     @Override
     public String toString()
     {
-        return "Ingrediente{" + "id=" + id + ", nome=" + nome + ", preco=" + preco + '}';
+        return "Ingrediente{" + "nome=" + nome + ", custo=" + precoDeCusto + '}';
     }
 
 }
