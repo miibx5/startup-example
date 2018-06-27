@@ -2,7 +2,7 @@
  *  Projeto.......: BackEndStartup
  *  Developer.....: Éder Luciano da Costa
  *  Copyright.....: 2018
- *  Criação.......: 24/06/2018, 21:37:05
+ *  Criação.......: 26/06/2018, 21:30:26
  *  Revisao.......: $Rev:$, $Id:$
  *  Codificacão...: UTF-8 (Utilizado na criação do arquivo)
  *  @author.......: Luciano
@@ -22,8 +22,10 @@ import java.util.Objects;
  *
  * @author Luciano
  */
-public abstract class Lanche
+public abstract class Lanche implements java.io.Serializable
 {
+    private static final long serialVersionUID = 3746576193671610368L;
+
     private String nome;
 
     private List<Ingrediente> ingredientes;
@@ -38,15 +40,34 @@ public abstract class Lanche
 
     protected Ingrediente queijo = new Ingrediente("Queijo", BigDecimal.valueOf(1.50d));
 
+    abstract Lanche montarLanche(Ingrediente... ingredientes);
+
+    abstract BigDecimal getPreco(List<Ingrediente> ingredientes);
+
     public Lanche()
     {
-        this(null);
+        this(null, null);
     }
 
     public Lanche(String nome)
     {
+        this(nome, null);
+    }
+
+    public Lanche(String nome, List<Ingrediente> ingredientes)
+    {
         this.nome = nome;
-        this.ingredientes = new ArrayList<>();
+        this.ingredientes = ingredientes;
+    }
+
+    protected List<Ingrediente> retornaIngredientes(Ingrediente... ingredientes)
+    {
+        if(Objects.isNull(this.ingredientes))
+        {
+            this.ingredientes = new ArrayList<>();
+        }
+        this.ingredientes.addAll(Arrays.asList(ingredientes));
+        return this.ingredientes;
     }
 
     public String getNome()
@@ -57,6 +78,16 @@ public abstract class Lanche
     public void setNome(String nome)
     {
         this.nome = nome;
+    }
+
+    public List<Ingrediente> getIngredientes()
+    {
+        return ingredientes;
+    }
+
+    public void setIngredientes(List<Ingrediente> ingredientes)
+    {
+        this.ingredientes = ingredientes;
     }
 
     public Ingrediente getAlface()
@@ -108,32 +139,5 @@ public abstract class Lanche
     {
         this.queijo = queijo;
     }
-
-    public List<Ingrediente> getIngredientes()
-    {
-        return ingredientes;
-    }
-
-    protected BigDecimal getPreco(List<Ingrediente> ingredientes)
-    {
-        BigDecimal preco = BigDecimal.ZERO;
-        for(Ingrediente ingrediente : ingredientes)
-        {
-            preco = preco.add(ingrediente.getPrecoDeCusto());
-        }
-        return preco;
-    }
-
-    protected List<Ingrediente> retornaIngredientes(Ingrediente... ingredientes)
-    {
-        if(Objects.isNull(this.ingredientes))
-        {
-            this.ingredientes = new ArrayList<>();
-        }
-        this.ingredientes.addAll(Arrays.asList(ingredientes));
-        return this.ingredientes;
-    }
-
-    abstract Lanche montarLanche();
 
 }
